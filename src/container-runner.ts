@@ -162,6 +162,11 @@ function buildVolumeMounts(
     readonly: false,
   });
 
+  // iFlow IPC directories for container-host communication
+  // The host will monitor these directories and forward requests to iFlow
+  fs.mkdirSync(path.join(groupIpcDir, 'iflow-requests'), { recursive: true });
+  fs.mkdirSync(path.join(groupIpcDir, 'iflow-responses'), { recursive: true });
+
   // Copy agent-runner source into a per-group writable location so agents
   // can customize it (add tools, change behavior) without affecting other
   // groups. Recompiled on container startup via entrypoint.sh.

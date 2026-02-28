@@ -41,6 +41,7 @@ import { findChannel, formatMessages, formatOutbound } from './router.js';
 import { startSchedulerLoop } from './task-scheduler.js';
 import { Channel, NewMessage, RegisteredGroup } from './types.js';
 import { logger } from './logger.js';
+import { startIFlowBridge } from './iflow-bridge.js';
 
 // Re-export for backwards compatibility during refactor
 export { escapeXml, formatMessages } from './router.js';
@@ -480,6 +481,10 @@ async function main(): Promise<void> {
   await whatsapp.connect();
 
   // Start subsystems (independently of connection handler)
+  
+  // Start iFlow bridge service for container-host communication
+  startIFlowBridge();
+  
   startSchedulerLoop({
     registeredGroups: () => registeredGroups,
     getSessions: () => sessions,

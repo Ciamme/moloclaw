@@ -3,33 +3,31 @@
 </p>
 
 <p align="center">
-  NanoClaw —— 您的专属 Claude 助手，在容器中安全运行。它轻巧易懂，并能根据您的个人需求灵活定制。
+  MoloClaw —— 您的专属 AI 助手，使用 iFlow 在容器中安全运行。它轻巧易懂，并能根据您的个人需求灵活定制。
 </p>
 
 <p align="center">
-  <a href="https://nanoclaw.dev">nanoclaw.dev</a>&nbsp; • &nbsp;
   <a href="README.md">English</a>&nbsp; • &nbsp;
-  <a href="https://discord.gg/VDdww8qS42"><img src="https://img.shields.io/discord/1470188214710046894?label=Discord&logo=discord&v=2" alt="Discord" valign="middle"></a>&nbsp; • &nbsp;
-  <a href="repo-tokens"><img src="repo-tokens/badge.svg" alt="34.9k tokens, 17% of context window" valign="middle"></a>
+  <a href="https://discord.gg/VDdww8qS42"><img src="https://img.shields.io/discord/1470188214710046894?label=Discord&logo=discord&v=2" alt="Discord" valign="middle"></a>
 </p>
 
-**新功能：** 首个支持 [Agent Swarms（智能体集群）](https://code.claude.com/docs/en/agent-teams) 的 AI 助手。可轻松组建智能体团队，在您的聊天中高效协作。
+**MoloClaw** 是 NanoClaw 的 iFlow 版本。它将 Claude Code 替换为 iFlow，提供相同的容器化 AI 助手体验，但使用您自己的 iFlow 实例。
 
 ## 我为什么创建这个项目
 
 [OpenClaw](https://github.com/openclaw/openclaw) 是一个令人印象深刻的项目，愿景宏大。但我无法安心使用一个我不了解却能访问我个人隐私的软件。OpenClaw 有 52+ 个模块、8 个配置管理文件、45+ 个依赖项，以及为 15 个渠道提供商设计的抽象层。其安全性是应用级别的（通过白名单、配对码实现），而非操作系统级别的隔离。所有东西都在一个共享内存的 Node 进程中运行。
 
-NanoClaw 用一个您能在 8 分钟内理解的代码库，为您提供了同样的核心功能。只有一个进程，少数几个文件。智能体（Agent）运行在具有文件系统隔离的真实 Linux 容器中，而不是依赖于权限检查。
+MoloClaw 用一个您能在 8 分钟内理解的代码库，为您提供了同样的核心功能。只有一个进程，少数几个文件。智能体（Agent）运行在具有文件系统隔离的真实 Linux 容器中，而不是依赖于权限检查。使用 iFlow 替代 Claude Code，让您可以完全控制 AI 模型和工具链。
 
 ## 快速开始
 
 ```bash
-git clone https://github.com/qwibitai/nanoclaw.git
-cd nanoclaw
-claude
+git clone https://github.com/Ciamme/moloclaw.git
+cd moloclaw
+npm install
+npm run build
+npm start
 ```
-
-然后运行 `/setup`。Claude Code 会处理一切：依赖安装、身份验证、容器设置、服务配置。
 
 ## 设计哲学
 

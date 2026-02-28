@@ -1,133 +1,117 @@
 <p align="center">
-  <img src="assets/nanoclaw-logo.png" alt="NanoClaw" width="400">
+  <img src="assets/nanoclaw-logo.png" alt="MoloClaw" width="400">
 </p>
 
 <p align="center">
-  An AI assistant that runs agents securely in their own containers. Lightweight, built to be easily understood and completely customized for your needs.
+  MoloClaw - Your personal AI assistant powered by iFlow, running securely in containers. Lightweight, easy to understand, and fully customizable.
 </p>
 
 <p align="center">
-  <a href="https://nanoclaw.dev">nanoclaw.dev</a>&nbsp; • &nbsp;
   <a href="README_zh.md">中文</a>&nbsp; • &nbsp;
-  <a href="https://discord.gg/VDdww8qS42"><img src="https://img.shields.io/discord/1470188214710046894?label=Discord&logo=discord&v=2" alt="Discord" valign="middle"></a>&nbsp; • &nbsp;
-  <a href="repo-tokens"><img src="repo-tokens/badge.svg" alt="34.9k tokens, 17% of context window" valign="middle"></a>
+  <a href="https://discord.gg/VDdww8qS42"><img src="https://img.shields.io/discord/1470188214710046894?label=Discord&logo=discord&v=2" alt="Discord" valign="middle"></a>
 </p>
 
-Using Claude Code, NanoClaw can dynamically rewrite its code to customize its feature set for your needs.
+**MoloClaw** is an iFlow-powered fork of NanoClaw. It replaces Claude Code with iFlow, giving you the same containerized AI assistant experience with full control over your AI model and toolchain.
 
-**New:** First AI assistant to support [Agent Swarms](https://code.claude.com/docs/en/agent-teams). Spin up teams of agents that collaborate in your chat.
+## Why MoloClaw?
 
-## Why I Built NanoClaw
+[NanoClaw](https://github.com/qwibitai/nanoclaw) is an impressive project, but I wanted to use my own AI infrastructure instead of Claude Code. MoloClaw provides the same core functionality but with iFlow integration, allowing you to:
 
-[OpenClaw](https://github.com/openclaw/openclaw) is an impressive project, but I wouldn't have been able to sleep if I had given complex software I didn't understand full access to my life. OpenClaw has nearly half a million lines of code, 53 config files, and 70+ dependencies. Its security is at the application level (allowlists, pairing codes) rather than true OS-level isolation. Everything runs in one Node process with shared memory.
+- Use your own AI models
+- Have complete control over the toolchain
+- Customize every aspect of the system
+- Maintain the same security and isolation benefits
 
-NanoClaw provides that same core functionality, but in a codebase small enough to understand: one process and a handful of files. Claude agents run in their own Linux containers with filesystem isolation, not merely behind permission checks.
+MoloClaw keeps the codebase small enough to understand: one process and a handful of files. Agents run in their own Linux containers with filesystem isolation, not merely behind permission checks.
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/qwibitai/NanoClaw.git
-cd NanoClaw
-claude
+git clone https://github.com/Ciamme/moloclaw.git
+cd moloclaw
+npm install
+npm run build
+npm start
 ```
 
-Then run `/setup`. Claude Code handles everything: dependencies, authentication, container setup and service configuration.
+See [docs/QUICKSTART.md](docs/QUICKSTART.md) for detailed setup instructions.
 
 ## Philosophy
 
-**Small enough to understand.** One process, a few source files and no microservices. If you want to understand the full NanoClaw codebase, just ask Claude Code to walk you through it.
+**Small enough to understand.** One process, a few source files and no microservices. The entire codebase can be understood in under an hour.
 
 **Secure by isolation.** Agents run in Linux containers (Apple Container on macOS, or Docker) and they can only see what's explicitly mounted. Bash access is safe because commands run inside the container, not on your host.
 
-**Built for the individual user.** NanoClaw isn't a monolithic framework; it's software that fits each user's exact needs. Instead of becoming bloatware, NanoClaw is designed to be bespoke. You make your own fork and have Claude Code modify it to match your needs.
+**Built for the individual user.** MoloClaw isn't a monolithic framework; it's software that fits each user's exact needs. Fork it and modify it to match your needs.
+
+**iFlow-powered.** Instead of Claude Code, MoloClaw uses iFlow for all AI operations. This gives you complete control over:
+- Which AI models to use
+- How tools are implemented
+- The agent loop behavior
+- Integration with your existing infrastructure
 
 **Customization = code changes.** No configuration sprawl. Want different behavior? Modify the code. The codebase is small enough that it's safe to make changes.
 
-**AI-native.**
-- No installation wizard; Claude Code guides setup.
-- No monitoring dashboard; ask Claude what's happening.
-- No debugging tools; describe the problem and Claude fixes it.
-
-**Skills over features.** Instead of adding features (e.g. support for Telegram) to the codebase, contributors submit [claude code skills](https://code.claude.com/docs/en/skills) like `/add-telegram` that transform your fork. You end up with clean code that does exactly what you need.
-
-**Best harness, best model.** NanoClaw runs on the Claude Agent SDK, which means you're running Claude Code directly. Claude Code is highly capable and its coding and problem-solving capabilities allow it to modify and expand NanoClaw and tailor it to each user.
-
 ## What It Supports
 
-- **Messenger I/O** - Message NanoClaw from your phone. Supports WhatsApp, Telegram, Discord, Slack, Signal and headless operation.
-- **Isolated group context** - Each group has its own `CLAUDE.md` memory, isolated filesystem, and runs in its own container sandbox with only that filesystem mounted to it.
-- **Main channel** - Your private channel (self-chat) for admin control; every group is completely isolated
-- **Scheduled tasks** - Recurring jobs that run Claude and can message you back
-- **Web access** - Search and fetch content from the Web
-- **Container isolation** - Agents are sandboxed in Apple Container (macOS) or Docker (macOS/Linux)
-- **Agent Swarms** - Spin up teams of specialized agents that collaborate on complex tasks. NanoClaw is the first personal AI assistant to support agent swarms.
-- **Optional integrations** - Add Gmail (`/add-gmail`) and more via skills
+- **Messenger I/O** - Message MoloClaw from your phone. Currently supports WhatsApp.
+- **Isolated group context** - Each group has its own `CLAUDE.md` memory, isolated filesystem, and runs in its own container sandbox.
+- **Main channel** - Your private channel (self-chat) for admin control.
+- **Scheduled tasks** - Recurring jobs that run agents and can message you back.
+- **Web access** - Search and fetch content from the Web.
+- **Container isolation** - Agents are sandboxed in Apple Container (macOS) or Docker (macOS/Linux).
+- **iFlow tools** - Full access to iFlow's toolset including file operations, shell commands, web access, and more.
+- **Optional integrations** - Extensible architecture for adding new capabilities.
 
 ## Usage
 
 Talk to your assistant with the trigger word (default: `@Andy`):
 
 ```
-@Andy send an overview of the sales pipeline every weekday morning at 9am (has access to my Obsidian vault folder)
-@Andy review the git history for the past week each Friday and update the README if there's drift
-@Andy every Monday at 8am, compile news on AI developments from Hacker News and TechCrunch and message me a briefing
+@Andy list all files in the current directory
+@Andy create a summary of the sales report
+@Andy every morning at 9am, send me a weather report
 ```
 
 From the main channel (your self-chat), you can manage groups and tasks:
 ```
 @Andy list all scheduled tasks across groups
-@Andy pause the Monday briefing task
+@Andy pause the morning briefing task
 @Andy join the Family Chat group
 ```
 
-## Customizing
+## iFlow Integration
 
-NanoClaw doesn't use configuration files. To make changes, just tell Claude Code what you want:
+MoloClaw uses iFlow for all AI operations. The architecture:
 
-- "Change the trigger word to @Bob"
-- "Remember in the future to make responses shorter and more direct"
-- "Add a custom greeting when I say good morning"
-- "Store conversation summaries weekly"
+```
+WhatsApp (baileys) --> SQLite --> Polling loop --> Container --> iFlow Bridge --> iFlow Tools --> Response
+```
 
-Or run `/customize` for guided changes.
+Key components:
+- `src/index.ts` - Main orchestrator
+- `src/iflow-bridge.ts` - Bridges container requests to iFlow
+- `src/iflow-tools.ts` - iFlow tool implementations
+- `src/container-runner.ts` - Container management
+- `container/agent-runner/` - Container-side agent
 
-The codebase is small enough that Claude can safely modify it.
-
-## Contributing
-
-**Don't add features. Add skills.**
-
-If you want to add Telegram support, don't create a PR that adds Telegram alongside WhatsApp. Instead, contribute a skill file (`.claude/skills/add-telegram/SKILL.md`) that teaches Claude Code how to transform a NanoClaw installation to use Telegram.
-
-Users then run `/add-telegram` on their fork and get clean code that does exactly what they need, not a bloated system trying to support every use case.
-
-### RFS (Request for Skills)
-
-Skills we'd like to see:
-
-**Communication Channels**
-- `/add-slack` - Add Slack
-
-**Session Management**
-- `/clear` - Add a `/clear` command that compacts the conversation (summarizes context while preserving critical information in the same session). Requires figuring out how to trigger compaction programmatically via the Claude Agent SDK.
+See [docs/IFLOW_INTEGRATION.md](docs/IFLOW_INTEGRATION.md) for detailed architecture documentation.
 
 ## Requirements
 
 - macOS or Linux
 - Node.js 20+
-- [Claude Code](https://claude.ai/download)
+- iFlow CLI
 - [Apple Container](https://github.com/apple/container) (macOS) or [Docker](https://docker.com/products/docker-desktop) (macOS/Linux)
 
 ## Architecture
 
-```
-WhatsApp (baileys) --> SQLite --> Polling loop --> Container (Claude Agent SDK) --> Response
-```
-
-Single Node.js process. Agents execute in isolated Linux containers with filesystem isolation. Only mounted directories are accessible. Per-group message queue with concurrency control. IPC via filesystem.
+Single Node.js process with iFlow bridge service. Agents execute in isolated Linux containers with filesystem isolation. Communication between container and host happens via IPC (file system).
 
 Key files:
 - `src/index.ts` - Orchestrator: state, message loop, agent invocation
+- `src/iflow-bridge.ts` - iFlow bridge service
+- `src/iflow-tools.ts` - iFlow tool implementations
 - `src/channels/whatsapp.ts` - WhatsApp connection, auth, send/receive
 - `src/ipc.ts` - IPC watcher and task processing
 - `src/router.ts` - Message formatting and outbound routing
@@ -136,45 +120,74 @@ Key files:
 - `src/task-scheduler.ts` - Runs scheduled tasks
 - `src/db.ts` - SQLite operations (messages, groups, sessions, state)
 - `groups/*/CLAUDE.md` - Per-group memory
+- `container/agent-runner/src/index.ts` - Container-side agent runner
 
 ## FAQ
 
-**Why Docker?**
+**Why use iFlow instead of Claude Code?**
 
-Docker provides cross-platform support (macOS, Linux and even Windows via WSL2) and a mature ecosystem. On macOS, you can optionally switch to Apple Container via `/convert-to-apple-container` for a lighter-weight native runtime.
+iFlow gives you complete control over:
+- Which AI models to use
+- How tools are implemented
+- The agent loop behavior
+- Integration with your existing infrastructure
 
-**Can I run this on Linux?**
+**How does the container-host communication work?**
 
-Yes. Docker is the default runtime and works on both macOS and Linux. Just run `/setup`.
+Containers communicate with the host via IPC files in `iflow-requests/` and `iflow-responses/` directories. The iFlow bridge service monitors these directories and forwards requests to iFlow tools.
+
+**Can I add custom iFlow tools?**
+
+Yes! Add your tool to `src/iflow-tools.ts`, register it in `ToolRegistry`, and add the mapping in `src/iflow-bridge.ts`. See [docs/IFLOW_INTEGRATION.md](docs/IFLOW_INTEGRATION.md) for details.
 
 **Is this secure?**
 
-Agents run in containers, not behind application-level permission checks. They can only access explicitly mounted directories. You should still review what you're running, but the codebase is small enough that you actually can. See [docs/SECURITY.md](docs/SECURITY.md) for the full security model.
+Agents run in containers with filesystem isolation. They can only access explicitly mounted directories. The iFlow bridge service only monitors designated IPC directories. See [docs/SECURITY.md](docs/SECURITY.md) for the full security model.
 
-**Why no configuration files?**
+**Can I run this on Linux?**
 
-We don't want configuration sprawl. Every user should customize NanoClaw so that the code does exactly what they want, rather than configuring a generic system. If you prefer having config files, you can tell Claude to add them.
+Yes. Docker is the default runtime and works on both macOS and Linux.
 
 **How do I debug issues?**
 
-Ask Claude Code. "Why isn't the scheduler running?" "What's in the recent logs?" "Why did this message not get a response?" That's the AI-native approach that underlies NanoClaw.
+Check the logs in `groups/{group}/logs/` directory. You can also run `node test-iflow.js` to test iFlow tools directly.
 
-**Why isn't the setup working for me?**
+**What's the difference between MoloClaw and NanoClaw?**
 
-If you have issues, during setup, Claude will try to dynamically fix them. If that doesn't work, run `claude`, then run `/debug`. If Claude finds an issue that is likely affecting other users, open a PR to modify the setup SKILL.md.
+MoloClaw is an iFlow-powered fork of NanoClaw. The main differences:
+- Uses iFlow instead of Claude Code
+- No Claude SDK dependencies
+- Custom iFlow bridge for container-host communication
+- Full control over AI models and tools
 
-**What changes will be accepted into the codebase?**
-
-Only security fixes, bug fixes, and clear improvements will be accepted to the base configuration. That's all.
-
-Everything else (new capabilities, OS compatibility, hardware support, enhancements) should be contributed as skills.
-
-This keeps the base system minimal and lets every user customize their installation without inheriting features they don't want.
+See [IFLOW_INTEGRATION.md](docs/IFLOW_INTEGRATION.md) for a detailed comparison.
 
 ## Community
 
 Questions? Ideas? [Join the Discord](https://discord.gg/VDdww8qS42).
 
+## Documentation
+
+- [Quick Start Guide](docs/QUICKSTART.md) - Get up and running in 5 minutes
+- [iFlow Integration](docs/IFLOW_INTEGRATION.md) - Detailed architecture and implementation
+- [Security Model](docs/SECURITY.md) - How MoloClaw keeps your data safe
+
+## Contributing
+
+MoloClaw welcomes contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+**What we're looking for:**
+
+- Bug fixes
+- Security improvements
+- Performance optimizations
+- Documentation improvements
+- New communication channels (Telegram, Discord, etc.)
+
 ## License
 
 MIT
+
+## Acknowledgments
+
+MoloClaw is based on [NanoClaw](https://github.com/qwibitai/nanoclaw), which is in turn inspired by [OpenClaw](https://github.com/openclaw/openclaw).

@@ -481,10 +481,10 @@ async function main(): Promise<void> {
   await whatsapp.connect();
 
   // Start subsystems (independently of connection handler)
-  
+
   // Start iFlow bridge service for container-host communication
   startIFlowBridge();
-  
+
   startSchedulerLoop({
     registeredGroups: () => registeredGroups,
     getSessions: () => sessions,

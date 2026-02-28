@@ -132,6 +132,10 @@ export function initDatabase(): void {
   const dbPath = path.join(STORE_DIR, 'messages.db');
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
+  // Create data/sessions directory for iFlow IPC
+  const sessionsDir = path.join(DATA_DIR, 'sessions');
+  fs.mkdirSync(sessionsDir, { recursive: true });
+
   db = new Database(dbPath);
   createSchema(db);
 

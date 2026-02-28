@@ -1,9 +1,9 @@
 /**
  * iFlow Tools Interface
- * 
+ *
  * This module provides a direct interface to iFlow's tool set.
  * It allows the MoloClaw bridge to execute iFlow tools programmatically.
- * 
+ *
  * NOTE: This is a wrapper around iFlow's tool functions.
  * In a real deployment, iFlow should be imported or called via its API.
  */
@@ -53,14 +53,19 @@ export async function readFile(filePath: string): Promise<string> {
   try {
     return fs.readFileSync(filePath, 'utf-8');
   } catch (err) {
-    throw new Error(`Failed to read file ${filePath}: ${err instanceof Error ? err.message : String(err)}`);
+    throw new Error(
+      `Failed to read file ${filePath}: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
 /**
  * Write a file via iFlow
  */
-export async function writeFile(filePath: string, content: string): Promise<void> {
+export async function writeFile(
+  filePath: string,
+  content: string,
+): Promise<void> {
   try {
     // Ensure directory exists
     const dir = path.dirname(filePath);
@@ -69,7 +74,9 @@ export async function writeFile(filePath: string, content: string): Promise<void
     }
     fs.writeFileSync(filePath, content, 'utf-8');
   } catch (err) {
-    throw new Error(`Failed to write file ${filePath}: ${err instanceof Error ? err.message : String(err)}`);
+    throw new Error(
+      `Failed to write file ${filePath}: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
@@ -80,18 +87,29 @@ export async function listDirectory(dirPath: string): Promise<string[]> {
   try {
     return fs.readdirSync(dirPath);
   } catch (err) {
-    throw new Error(`Failed to list directory ${dirPath}: ${err instanceof Error ? err.message : String(err)}`);
+    throw new Error(
+      `Failed to list directory ${dirPath}: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
 /**
  * Find files by pattern via iFlow
  */
-export async function glob(pattern: string, basePath?: string): Promise<string[]> {
+export async function glob(
+  pattern: string,
+  basePath?: string,
+): Promise<string[]> {
   try {
     const cwd = basePath || process.cwd();
-    const result = await bash(`find ${cwd} -name "${pattern}" -type f 2>/dev/null`, cwd);
-    return result.split('\n').filter(f => f).map(f => f.trim());
+    const result = await bash(
+      `find ${cwd} -name "${pattern}" -type f 2>/dev/null`,
+      cwd,
+    );
+    return result
+      .split('\n')
+      .filter((f) => f)
+      .map((f) => f.trim());
   } catch (err) {
     logger.warn({ pattern, error: err }, 'Glob search failed');
     return [];
@@ -101,10 +119,16 @@ export async function glob(pattern: string, basePath?: string): Promise<string[]
 /**
  * Search file content via iFlow
  */
-export async function grep(pattern: string, filePath: string): Promise<string[]> {
+export async function grep(
+  pattern: string,
+  filePath: string,
+): Promise<string[]> {
   try {
-    const result = await bash(`grep -n "${pattern}" "${filePath}" 2>/dev/null || true`, path.dirname(filePath));
-    return result.split('\n').filter(l => l);
+    const result = await bash(
+      `grep -n "${pattern}" "${filePath}" 2>/dev/null || true`,
+      path.dirname(filePath),
+    );
+    return result.split('\n').filter((l) => l);
   } catch (err) {
     logger.warn({ pattern, filePath, error: err }, 'Grep search failed');
     return [];
@@ -120,7 +144,9 @@ export async function webSearch(query: string): Promise<string> {
     // In a real implementation, this would call iFlow's web_search tool
     return `Web search results for: ${query}\n\n(Note: Actual web search requires iFlow integration)`;
   } catch (err) {
-    throw new Error(`Web search failed: ${err instanceof Error ? err.message : String(err)}`);
+    throw new Error(
+      `Web search failed: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
@@ -133,7 +159,9 @@ export async function webFetch(url: string): Promise<string> {
     const result = await bash(`curl -s "${url}"`, process.cwd());
     return result;
   } catch (err) {
-    throw new Error(`Web fetch failed: ${err instanceof Error ? err.message : String(err)}`);
+    throw new Error(
+      `Web fetch failed: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
@@ -142,14 +170,16 @@ export async function webFetch(url: string): Promise<string> {
  */
 export async function task(
   subagentType: string,
-  prompt: string
+  prompt: string,
 ): Promise<string> {
   try {
     // For now, return a placeholder
     // In a real implementation, this would spawn a subagent
     return `Subtask result from ${subagentType}\n\nPrompt: ${prompt}\n\n(Note: Actual subagent execution requires iFlow integration)`;
   } catch (err) {
-    throw new Error(`Subtask execution failed: ${err instanceof Error ? err.message : String(err)}`);
+    throw new Error(
+      `Subtask execution failed: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }
 
@@ -171,15 +201,18 @@ export const ToolRegistry: Record<string, (...args: any[]) => Promise<any>> = {
 /**
  * Execute a tool by name with given arguments
  */
-export async function executeTool(toolName: string, args: Record<string, unknown>): Promise<unknown> {
+export async function executeTool(
+  toolName: string,
+  args: Record<string, unknown>,
+): Promise<unknown> {
   const toolFn = ToolRegistry[toolName];
-  
+
   if (!toolFn) {
     throw new Error(`Unknown tool: ${toolName}`);
   }
-  
+
   // Convert args object to array of arguments based on tool signature
   const toolArgs = Object.values(args);
-  
+
   return toolFn(...toolArgs);
 }

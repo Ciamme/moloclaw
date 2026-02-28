@@ -334,6 +334,11 @@ export function startIFlowBridge(): void {
 
   const pollSessions = () => {
     try {
+      // Check if sessions directory exists before trying to read it
+      if (!fs.existsSync(sessionsDir)) {
+        return; // Directory doesn't exist yet, skip this poll
+      }
+
       const groups = fs
         .readdirSync(sessionsDir, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
@@ -349,7 +354,10 @@ export function startIFlowBridge(): void {
         }
       }
     } catch (err) {
-      logger.error({ error: err }, 'Failed to poll sessions');
+      // Silently ignore ENOENT errors (directory not created yet)
+      if ((err as NodeJS.ErrnoException).code !== 'ENOENT') {
+        logger.error({ error: err }, 'Failed to poll sessions');
+      }
     }
   };
 
